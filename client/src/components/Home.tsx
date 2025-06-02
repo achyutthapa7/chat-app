@@ -17,16 +17,9 @@ interface Message {
   // Add other message properties as needed
 }
 
-interface Conversation {
-  _id: string;
-  messages: Message[];
-  // Add other conversation properties as needed
-}
-
 const Home = () => {
   const { socket } = useSocket();
   const { user } = useAuth();
-  const myId = user?.data?._id;
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
@@ -42,7 +35,7 @@ const Home = () => {
   // Join socket room on mount
 
   useEffect(() => {
-    socket.on("set-online", (data) => {
+    socket.on("set-online", (data: any) => {
       if (data) setStatus("online");
       else setStatus("offiline");
     });
@@ -287,7 +280,7 @@ interface ChatAreaProps {
   setNewMessage: (message: string) => void;
   handleSendMessage: () => void;
   handleKeyPress: (e: React.KeyboardEvent<HTMLInputElement>) => void;
-  messagesEndRef: React.RefObject<HTMLDivElement>;
+  messagesEndRef?: any;
   loading: boolean;
   sending: boolean;
   conversationId?: string;
@@ -309,7 +302,7 @@ const ChatArea: React.FC<ChatAreaProps> = ({
 }) => {
   const { socket } = useSocket();
   const [isTyping, setIsTyping] = useState(false);
-  let typingTimeout: NodeJS.Timeout;
+  let typingTimeout: any;
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (typingTimeout) clearTimeout(typingTimeout);
